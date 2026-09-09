@@ -14,8 +14,8 @@ def goto(tab, url):
     tab.wait(3)
 
 def read_text(tab):
-    reply = tab.Runtime.evaluate(expression="document.body.innerText")
-    return reply["result"]["value"]
+    reply = tab.Runtime.evaluate(expression="document.body ? document.body.innerText : ''")
+    return reply["result"].get("value", "")
 
 def list_links(tab):
     js = """
@@ -35,3 +35,7 @@ def click_link(tab, index):
     """
     tab.Runtime.evaluate(expression=js)
     tab.wait(3)
+
+def current_url(tab):
+    reply = tab.Runtime.evaluate(expression="location.href")
+    return reply["result"]["value"]
